@@ -12,7 +12,7 @@ My first assignment has two parts.
 
 ## (a)
 
-## (b)
+## (b) deneme deneme
 
 First, "polls_us_election_2016" data set is imported by the codes shown below from the dslabs package.
 
