@@ -13,3 +13,61 @@ My first assignment has two parts.
 ## (a)
 
 ## (b)
+
+First, "polls_us_election_2016" data set is imported by the codes shown below from the dslabs package.
+
+```{r}
+install.packages("dslabs")
+library(dslabs)
+data(polls_us_election_2016)
+```
+
+To display the first 10 rows of the data set, we may use **head()** function. **head()** function shows the first lines (rows) of the data frame, and we can choose the number of rows we want to see.
+
+```{r}
+head(polls_us_election_2016, 10)
+```
+
+Next, total number of NA values in the entire data set is wanted to be calculated. If we want to calculate the total number of something we use **sum()** function. For this, **is.na()** will help us, too.
+
+```{r}
+total_number_na <- sum(is.na(polls_us_election_2016))
+```
+
+Now, it's wanted to replace all NA values:
+
+-   with birth year for numeric columns,
+
+-   with first name for character or factor columns.
+
+Also, we will store this new data set as a new object.
+
+```{r}
+new_data_set <- polls_us_election_2016
+birth_year <- 2004
+first_name <- "Cerem"
+
+for (x in names(new_data_set)) {
+  if (is.numeric(new_data_set[[x]])) {
+    #if the column is numeric
+    new_data_set[[x]][is.na(new_data_set[[x]])] <- birth_year
+     #replace NA with birth year
+  }
+  else if (is.character(new_data_set[[x]]) || is.factor(modified_data[[col]])) {
+    #if the column is character
+    new_data_set[[x]][is.na(new_data_set[[x]])] <- first_name
+     #replace NA with first name
+  }
+}
+
+print(new_data_set)
+ #new data set is displayed
+```
+
+Finally, we'll print the first 10 rows of the new data frame and the total number of NAs remaining in the new data frame. To do this, we'll use **head()** and **sum()** functions again.
+
+```{r}
+head(new_data_set,10)
+
+print(total_number_na <- sum(is.na(new_data_set)))
+```
