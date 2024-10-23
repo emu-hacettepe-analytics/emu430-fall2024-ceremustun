@@ -12,7 +12,7 @@ My first assignment has two parts.
 
 ## (a)
 
-## (b) deneme deneme
+## (b)
 
 First, "polls_us_election_2016" data set is imported by the codes shown below from the dslabs package.
 
@@ -47,16 +47,23 @@ new_data_set <- polls_us_election_2016
 birth_year <- 2004
 first_name <- "Cerem"
 
-for (x in names(new_data_set)) {
-  if (is.numeric(new_data_set[[x]])) {
+for (col in names(new_data_set)) {
+  if (is.numeric(new_data_set[[col]])) {
     #if the column is numeric
-    new_data_set[[x]][is.na(new_data_set[[x]])] <- birth_year
+    new_data_set[[col]][is.na(new_data_set[[col]])] <- birth_year
      #replace NA with birth year
   }
-  else if (is.character(new_data_set[[x]]) || is.factor(modified_data[[col]])) {
+ else if (is.character(new_data_set[[col]])) {
     #if the column is character
-    new_data_set[[x]][is.na(new_data_set[[x]])] <- first_name
+    new_data_set[[col]][is.na(new_data_set[[col]])] <- first_name
      #replace NA with first name
+ }
+  else if (is.factor(new_data_set[[col]])) {
+    #if the column is factor
+    levels(new_data_set[[col]]) <- c(levels(new_data_set[[col]]), first_name)
+    #adding the first_name to the factor levels
+    new_data_set[[col]][is.na(new_data_set[[col]])] <- first_name
+    #replace NA with first name
   }
 }
 
@@ -69,5 +76,5 @@ Finally, we'll print the first 10 rows of the new data frame and the total numbe
 ```{r}
 head(new_data_set,10)
 
-print(total_number_na <- sum(is.na(new_data_set)))
+print(new_total_number_na <- sum(is.na(new_data_set)))
 ```
