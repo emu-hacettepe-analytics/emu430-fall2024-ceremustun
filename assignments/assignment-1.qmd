@@ -17,7 +17,6 @@ My first assignment has two parts.
 First, "polls_us_election_2016" data set is imported by the codes shown below from the dslabs package.
 
 ```{r}
-install.packages("dslabs")
 library(dslabs)
 data(polls_us_election_2016)
 ```
@@ -66,15 +65,12 @@ for (col in names(new_data_set)) {
     #replace NA with first name
   }
 }
-
-print(new_data_set)
- #new data set is displayed
 ```
 
 Finally, we'll print the first 10 rows of the new data frame and the total number of NAs remaining in the new data frame. To do this, we'll use **head()** and **sum()** functions again.
 
 ```{r}
-head(new_data_set,10)
+head(new_data_set, 10)
 
 print(new_total_number_na <- sum(is.na(new_data_set)))
 ```

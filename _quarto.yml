@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "Cerem Üstün's Analytics Lab"
+  title: "Cerem Ustun's Analytics Lab"
   navbar:
     search: true
     left:
@@ -34,20 +34,18 @@ website:
         - assignments.qmd
         - assignments/assignment-1.qmd
         - assignments/assignment-2.qmd  
+
   page-navigation: true
   back-to-top-navigation: true
   page-footer:
     center: "Hacettepe IE - EMU430 - 2024 Fall" 
     border: true
+
 format:
   html:
     toc: true
     toc-location: left
-    theme: 
-      light: pulse 
-      dark: superhero
+    theme: pulse
     css: styles.css
 
-
 editor: visual
-
