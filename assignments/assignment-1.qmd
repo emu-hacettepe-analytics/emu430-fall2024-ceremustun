@@ -26,6 +26,29 @@ Baydogan also mentioned Trendyol's ranking algorithms and how recommendation mod
 
 In discussing new frontiers, he introduced physics-informed machine learning and dynamic systems and the use of machine learning for optimization, exploring whether machine learning could be leveraged to improve optimization techniques.
 
+***Question 1***
+
+1.  interpretability (regulation)
+2.  steerability
+3.  robustness
+4.  decision-making
+
+Which one/ones did he mentioned when he was talking about traditional machine learning and deep learning differences?
+
+a\) 1 and 2 b) 1 and 3 c) 1, 2 and 3 *d) All of them*
+
+***Question 2***
+
+Why do we need human sources? Why he doesn't think that ai won't be able to take all of our jobs at least in the next a few years?
+
+*Understanding systems and quantifying them still requires human involvement, and in fact, much of the data is messy. There is still a great need for human expertise to obtain accurate data and perform correct transformations.*
+
+*The need to develop alternative approaches for structured and unstructured data is increasing.*
+
+*Human guidance makes a difference.*
+
+*Interpretability remains??crucial.*
+
 ## (b)
 
 First, "polls_us_election_2016" data set is imported by the codes shown below from the dslabs package.
@@ -45,6 +68,7 @@ Next, total number of NA values in the entire data set is wanted to be calculate
 
 ```{r}
 total_number_na <- sum(is.na(polls_us_election_2016))
+print(total_number_na)
 ```
 
 Now, it's wanted to replace all NA values:
@@ -55,27 +79,29 @@ Now, it's wanted to replace all NA values:
 
 Also, we will store this new data set as a new object.
 
+*P.S. In here, i've used ai for the factor part because i was having some errors and couldn't figure out what to do.*
+
 ```{r}
 new_data_set <- polls_us_election_2016
 birth_year <- 2004
 first_name <- "Cerem"
 
-for (col in names(new_data_set)) {
-  if (is.numeric(new_data_set[[col]])) {
+for (x in names(new_data_set)) {
+  if (is.numeric(new_data_set[[x]])) {
     #if the column is numeric
-    new_data_set[[col]][is.na(new_data_set[[col]])] <- birth_year
+    new_data_set[[x]][is.na(new_data_set[[x]])] <- birth_year
      #replace NA with birth year
   }
- else if (is.character(new_data_set[[col]])) {
+ else if (is.character(new_data_set[[x]])) {
     #if the column is character
-    new_data_set[[col]][is.na(new_data_set[[col]])] <- first_name
+    new_data_set[[x]][is.na(new_data_set[[x]])] <- first_name
      #replace NA with first name
  }
-  else if (is.factor(new_data_set[[col]])) {
+  else if (is.factor(new_data_set[[x]])) {
     #if the column is factor
-    levels(new_data_set[[col]]) <- c(levels(new_data_set[[col]]), first_name)
+    levels(new_data_set[[x]]) <- c(levels(new_data_set[[x]]), first_name)
     #adding the first_name to the factor levels
-    new_data_set[[col]][is.na(new_data_set[[col]])] <- first_name
+    new_data_set[[x]][is.na(new_data_set[[x]])] <- first_name
     #replace NA with first name
   }
 }

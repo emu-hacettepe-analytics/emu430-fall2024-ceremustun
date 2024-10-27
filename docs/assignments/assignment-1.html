@@ -260,6 +260,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>An example from the electricity market was also given. He talked about the need to balance production and consumption, where inaccurate forecasts could lead to significant costs. He discussed the impact of seasonality and special events on decision-making.</p>
 <p>Baydogan also mentioned Trendyol’s ranking algorithms and how recommendation models are designed to drive sales, as well as the use of Google Trends. He addressed biased data and talked about reinforcement learning.</p>
 <p>In discussing new frontiers, he introduced physics-informed machine learning and dynamic systems and the use of machine learning for optimization, exploring whether machine learning could be leveraged to improve optimization techniques.</p>
+<p><strong><em>Question 1</em></strong></p>
+<ol type="1">
+<li>interpretability (regulation)</li>
+<li>steerability</li>
+<li>robustness</li>
+<li>decision-making</li>
+</ol>
+<p>Which one/ones did he mentioned when he was talking about traditional machine learning and deep learning differences?</p>
+<p>a) 1 and 2 b) 1 and 3 c) 1, 2 and 3 <em>d) All of them</em></p>
+<p><strong><em>Question 2</em></strong></p>
+<p>Why do we need human sources? Why he doesn’t think that ai won’t be able to take all of our jobs at least in the next a few years?</p>
+<p><em>Understanding systems and quantifying them still requires human involvement, and in fact, much of the data is messy. There is still a great need for human expertise to obtain accurate data and perform correct transformations.</em></p>
+<p><em>The need to develop alternative approaches for structured and unstructured data is increasing.</em></p>
+<p><em>Human guidance makes a difference.</em></p>
+<p><em>Interpretability remains??crucial.</em></p>
 </section>
 <section id="b" class="level2">
 <h2 class="anchored" data-anchor-id="b">(b)</h2>
@@ -320,7 +335,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Next, total number of NA values in the entire data set is wanted to be calculated. If we want to calculate the total number of something we use <strong>sum()</strong> function. For this, <strong>is.na()</strong> will help us, too.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>total_number_na <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(polls_us_election_2016))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>total_number_na <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(polls_us_election_2016))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(total_number_na)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 11604</code></pre>
+</div>
 </div>
 <p>Now, it’s wanted to replace all NA values:</p>
 <ul>
@@ -328,34 +347,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>with first name for character or factor columns.</p></li>
 </ul>
 <p>Also, we will store this new data set as a new object.</p>
+<p><em>P.S. In here, i’ve used ai for the factor part because i was having some errors and couldn’t figure out what to do.</em></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>new_data_set <span class="ot">&lt;-</span> polls_us_election_2016</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>birth_year <span class="ot">&lt;-</span> <span class="dv">2004</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>first_name <span class="ot">&lt;-</span> <span class="st">"Cerem"</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (col <span class="cf">in</span> <span class="fu">names</span>(new_data_set)) {</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.numeric</span>(new_data_set[[col]])) {</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">#if the column is numeric</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    new_data_set[[col]][<span class="fu">is.na</span>(new_data_set[[col]])] <span class="ot">&lt;-</span> birth_year</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>     <span class="co">#replace NA with birth year</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a> <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">is.character</span>(new_data_set[[col]])) {</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">#if the column is character</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    new_data_set[[col]][<span class="fu">is.na</span>(new_data_set[[col]])] <span class="ot">&lt;-</span> first_name</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>     <span class="co">#replace NA with first name</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a> }</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">is.factor</span>(new_data_set[[col]])) {</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">#if the column is factor</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">levels</span>(new_data_set[[col]]) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">levels</span>(new_data_set[[col]]), first_name)</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">#adding the first_name to the factor levels</span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    new_data_set[[col]][<span class="fu">is.na</span>(new_data_set[[col]])] <span class="ot">&lt;-</span> first_name</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">#replace NA with first name</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>new_data_set <span class="ot">&lt;-</span> polls_us_election_2016</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>birth_year <span class="ot">&lt;-</span> <span class="dv">2004</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>first_name <span class="ot">&lt;-</span> <span class="st">"Cerem"</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (x <span class="cf">in</span> <span class="fu">names</span>(new_data_set)) {</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.numeric</span>(new_data_set[[x]])) {</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">#if the column is numeric</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    new_data_set[[x]][<span class="fu">is.na</span>(new_data_set[[x]])] <span class="ot">&lt;-</span> birth_year</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>     <span class="co">#replace NA with birth year</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a> <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">is.character</span>(new_data_set[[x]])) {</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">#if the column is character</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    new_data_set[[x]][<span class="fu">is.na</span>(new_data_set[[x]])] <span class="ot">&lt;-</span> first_name</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>     <span class="co">#replace NA with first name</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a> }</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">is.factor</span>(new_data_set[[x]])) {</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">#if the column is factor</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">levels</span>(new_data_set[[x]]) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">levels</span>(new_data_set[[x]]), first_name)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">#adding the first_name to the factor levels</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    new_data_set[[x]][<span class="fu">is.na</span>(new_data_set[[x]])] <span class="ot">&lt;-</span> first_name</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">#replace NA with first name</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Finally, we’ll print the first 10 rows of the new data frame and the total number of NAs remaining in the new data frame. To do this, we’ll use <strong>head()</strong> and <strong>sum()</strong> functions again.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(new_data_set, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(new_data_set, <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        state  startdate    enddate
 1        U.S. 2016-11-03 2016-11-06
@@ -402,7 +422,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 9         44.82594      41.59978        7.870127             2004
 10        42.92745      42.23545        6.316175             2004</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(new_total_number_na <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(new_data_set)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(new_total_number_na <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(new_data_set)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0</code></pre>
 </div>

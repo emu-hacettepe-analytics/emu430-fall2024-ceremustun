@@ -25,8 +25,8 @@ R, Quarto, Git, Python, Excel, AutoCAD
 
 # Hobbies
 
-theatre, gym
+Theatre, gym
 
 # CV
 
-[PDF Download](docs/Cerem_Ustun_CV.pdf)
+To be able to download my CV: [PDF Download](docs/ceremCV.pdf)
