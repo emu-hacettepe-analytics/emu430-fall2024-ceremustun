@@ -1,5 +1,6 @@
 ---
 title: "Assignment 2"
+code-fold: true
 ---
 
 # Assignment 2
@@ -7,7 +8,9 @@ title: "Assignment 2"
 ## Part 1 URLs
 
 ```{r}
-#| echo: false
+#| echo: true
+#| message: false
+#| warning: false
 # Define IMDb search URLs 
 
 imdb_url <- "https://m.imdb.com/search/title/?title_type=feature&num_votes=2500,&country_of_origin=TR"
@@ -26,6 +29,7 @@ imdb_urls_release_date
 First the libraries that are needed are loaded:
 
 ```{r}
+#| echo: true
 #| message: false
 #| warning: false
 # Load required libraries
@@ -33,10 +37,13 @@ library(tidyverse)
 library(rvest)
 library(stringr)
 library(stringi)
+library(kableExtra)
 ```
 
 ```{r}
-#| echo: false
+#| echo: true
+#| message: false
+#| warning: false
   # Helper Functions
 
   #To create these functions, i've used the help of claud ai to find the proper functions that i haven't known yet. Like iconv, grepl, str_match etc. Also, i used it to give better names to these functions.
@@ -94,7 +101,9 @@ parse_votes <- function(vote_str) {
 ```
 
 ```{r}
-#| echo: false
+#| echo: true
+#| message: false
+#| warning: false
   # Scrape Movie Data
 
   #Since i've created three functions, i've decided to make the scrapping with a function, too. 
@@ -150,7 +159,7 @@ scrape_movies <- function(url) {
   #To apply the scrape_movies function to each URL in the imdb_urls_release_date list, map_df was used but it kept getting error. Therefore, by the help of the claud ai, the code is updated. 
 movies_df <- bind_rows(lapply(imdb_urls_release_date, scrape_movies))
 
-movies_df
+knitr::kable(movies_df)
 ```
 
 ## Part 3
@@ -158,25 +167,33 @@ movies_df
 ### 3.a
 
 ```{r}
-#| echo: false
+#| echo: true
+#| message: false
+#| warning: false
 top_5_movies <- movies_df |> arrange(desc(Rating)) |> head(5)
 bottom_5_movies <- movies_df |> arrange(Rating) |> head(5)
 ```
 
 ```{r}
-#| echo: false
-top_5_movies
+#| echo: true
+#| message: false
+#| warning: false
+knitr::kable(top_5_movies)
 ```
 
 ```{r}
-#| echo: false
-bottom_5_movies
+#| echo: true
+#| message: false
+#| warning: false
+knitr::kable(bottom_5_movies)
 ```
 
 ### 3.b
 
 ```{r}
-#| echo: false
+#| echo: true
+#| message: false
+#| warning: false
 favorite_movies_of_cerem <- c("Ayla", "Issiz Adam", "G.O.R.A.")
 
 movies_df |> filter(Title %in% favorite_movies_of_cerem)
@@ -185,12 +202,16 @@ movies_df |> filter(Title %in% favorite_movies_of_cerem)
 ### 3.c
 
 ```{r}
+#| echo: true
 #| message: false
 #| warning: false
 library(ggplot2)
 ```
 
 ```{r}
+#| echo: true
+#| message: false
+#| warning: false
   #Yearly analysis of the mean IMDB ratings in Turkiye.
 yearly_ratings <- movies_df |> 
   group_by(Year) |> 
@@ -204,6 +225,9 @@ ggplot(yearly_ratings, aes(x = Year, y = average_rating)) +
 ```
 
 ```{r}
+#| echo: true
+#| message: false
+#| warning: false
   #Analysing of number of movies released in each year in Turkiye.
 movies_counted <- movies_df |> 
   group_by(Year) |> 
@@ -215,6 +239,9 @@ ggplot(movies_counted, aes(x = Year, y = Movie_Count)) +
 ```
 
 ```{r}
+#| echo: true
+#| message: false
+#| warning: false
   #Box plots of ratings over the years
 movies_df |>  
   group_by(Year) |> 
@@ -224,14 +251,47 @@ movies_df |>
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
+### 3.d
 
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+# Correlation analysis
+correlation_votes_ratings <- cor(movies_df$Votes, movies_df$Rating, use = "complete.obs")
+print(paste("Correlation between Votes and Rating: ", correlation_votes_ratings))
+```
 
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+# Scatter plot
+ggplot(movies_df, aes(x = Votes, y = Rating)) +
+  geom_point() +
+  geom_smooth(method = "lm", col = "blue") +
+  labs(title = "Relation between Rating and Votes", x = "Votes", y = "Rating")
+```
+### 3.e
 
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+# Correlation analysis
+correlation_duration_ratings <- cor(movies_df$Duration, movies_df$Rating, use = "complete.obs")
+print(paste("Correlation between Duration and Rating: ", correlation_duration_ratings))
+```
 
-
-
-
-
-
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+# Scatter plot
+ggplot(movies_df, aes(x = Duration, y = Rating)) +
+  geom_point() +
+  geom_smooth(method = "lm", col = "red") +
+  labs(title = "Relation between Duration and Rating", x = "Duration", y = "Rating")
+```
 
 ## Part 4

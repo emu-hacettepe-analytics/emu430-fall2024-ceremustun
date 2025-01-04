@@ -216,6 +216,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#a" id="toc-a" class="nav-link" data-scroll-target="#a">3.a</a></li>
   <li><a href="#b" id="toc-b" class="nav-link" data-scroll-target="#b">3.b</a></li>
   <li><a href="#c" id="toc-c" class="nav-link" data-scroll-target="#c">3.c</a></li>
+  <li><a href="#d" id="toc-d" class="nav-link" data-scroll-target="#d">3.d</a></li>
+  <li><a href="#e" id="toc-e" class="nav-link" data-scroll-target="#e">3.e</a></li>
   </ul></li>
   <li><a href="#part-4" id="toc-part-4" class="nav-link" data-scroll-target="#part-4">Part 4</a></li>
   </ul></li>
@@ -253,6 +255,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="part-1-urls" class="level2">
 <h2 class="anchored" data-anchor-id="part-1-urls">Part 1 URLs</h2>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define IMDb search URLs </span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>imdb_url <span class="ot">&lt;-</span> <span class="st">"https://m.imdb.com/search/title/?title_type=feature&amp;num_votes=2500,&amp;country_of_origin=TR"</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>imdb_urls_release_date <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  movies_2010_to_2023 <span class="ot">&lt;-</span> <span class="st">"https://m.imdb.com/search/title/?title_type=feature&amp;release_date=2010-01-01,2023-12-30&amp;num_votes=2500,&amp;country_of_origin=TR&amp;count=250"</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  movies_before_2010 <span class="ot">&lt;-</span> <span class="st">"https://m.imdb.com/search/title/?title_type=feature&amp;release_date=,2009-12-31&amp;num_votes=2500,&amp;country_of_origin=TR&amp;count=250"</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the vector imdb_urls_release_date</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>imdb_urls_release_date</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "https://m.imdb.com/search/title/?title_type=feature&amp;release_date=2010-01-01,2023-12-30&amp;num_votes=2500,&amp;country_of_origin=TR&amp;count=250"
 [2] "https://m.imdb.com/search/title/?title_type=feature&amp;release_date=,2009-12-31&amp;num_votes=2500,&amp;country_of_origin=TR&amp;count=250"          </code></pre>
@@ -263,28 +279,498 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="part-2-web-scrapping">Part 2 Web Scrapping</h2>
 <p>First the libraries that are needed are loaded:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load required libraries</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load required libraries</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringi)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 50 × 5
-   Title                     Year Duration Rating  Votes
-   &lt;chr&gt;                    &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
- 1 Kuru Otlar Ustune         2023      197    7.7  16000
- 2 Yedinci Kogustaki Mucize  2019      132    8.2  58000
- 3 Baskin                    2015       97    5.8  13000
- 4 Kis Uykusu                2014      196    8    57000
- 5 Cebimdeki Yabanci         2018       95    6.8  10000
- 6 Ayla                      2017      125    8.2  45000
- 7 Bir Zamanlar Anadolu'da   2011      157    7.8  52000
- 8 Ahlat Agaci               2018      188    8    29000
- 9 Istanbul Icin Son Cagri   2023       91    5.3  96000
-10 Dag II                    2016      135    8.2 111000
-# ℹ 40 more rows</code></pre>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Helper Functions</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#To create these functions, i've used the help of claud ai to find the proper functions that i haven't known yet. Like iconv, grepl, str_match etc. Also, i used it to give better names to these functions.</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#To convert the Turkish characters into basic ASCII characters, clean_text function is created. </span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>clean_text <span class="ot">&lt;-</span> <span class="cf">function</span>(text) {</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  text <span class="ot">&lt;-</span> <span class="fu">iconv</span>(text, <span class="at">from =</span> <span class="st">"UTF-8"</span>, <span class="at">to =</span> <span class="st">"ASCII//TRANSLIT"</span>, <span class="at">sub =</span> <span class="st">""</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  text <span class="ot">&lt;-</span> <span class="fu">str_trim</span>(text)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(text)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">#To convert hours into minutes, parse_duration function is created. </span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>parse_duration <span class="ot">&lt;-</span> <span class="cf">function</span>(duration) {</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(duration)) {</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="cn">NA</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">grepl</span>(<span class="st">"^</span><span class="sc">\\</span><span class="st">d+h$"</span>, duration)) {</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    hours <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">"h$"</span>, <span class="st">""</span>, duration))</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(hours <span class="sc">*</span> <span class="dv">60</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>  parts <span class="ot">&lt;-</span> <span class="fu">str_match</span>(duration, <span class="st">"(</span><span class="sc">\\</span><span class="st">d+)h (</span><span class="sc">\\</span><span class="st">d+)m"</span>)</span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">is.na</span>(parts[<span class="dv">1</span>])) {</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="cn">NA</span>) </span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>  hours <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(parts[<span class="dv">2</span>])</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>  minutes <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(parts[<span class="dv">3</span>])</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(hours <span class="sc">*</span> <span class="dv">60</span> <span class="sc">+</span> minutes)</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>  <span class="co">#To clean the vote numbers, parse_votes function is created.  </span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>parse_votes <span class="ot">&lt;-</span> <span class="cf">function</span>(vote_str) {</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>  vote_str <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(vote_str, <span class="st">'["</span><span class="sc">\\</span><span class="st"> ]'</span>, <span class="st">""</span>) <span class="co">#All double quotes (") from the input string are replaced with spaces ( ).</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>  vote_str <span class="ot">&lt;-</span> <span class="fu">str_trim</span>(vote_str)</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Here, multiplier that is created checks if the string contains "K" or "M" using grepl. If it has "K", it'll assign the multiplier based on the suffix K, which is 1000. Same procedure works with "M", too. If there's no suffix, then it'll assign the multiplier 1, which will return the value itself. </span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>  <span class="co"># P.S. I didn't know the case_when function, i've searched for it by using chatgpt, because i wanted to learn a way to bring together those grepl functions. </span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>  multiplier <span class="ot">&lt;-</span> <span class="fu">case_when</span>(</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">grepl</span>(<span class="st">"K"</span>, vote_str) <span class="sc">~</span> <span class="dv">1000</span>,</span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    <span class="fu">grepl</span>(<span class="st">"M"</span>, vote_str) <span class="sc">~</span> <span class="fl">1e6</span>,</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="dv">1</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>  <span class="co">#After the multiplier assignment part, now all those "K", "M",  parentheses and dotes are removed &amp; all the votes converted to numeric for the calculation that'll be made.</span></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>  vote_num <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(vote_str, <span class="st">"[()KM]"</span>, <span class="st">""</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_replace_all</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">."</span>, <span class="st">""</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.numeric</span>()</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Finally, all the votes are returned as the correct numeric values of them.</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(vote_num <span class="sc">*</span> multiplier)</span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Scrape Movie Data</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Since i've created three functions, i've decided to make the scrapping with a function, too. </span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>scrape_movies <span class="ot">&lt;-</span> <span class="cf">function</span>(url) {</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  page <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#First, a clean vector of movie titles has created.</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  titles <span class="ot">&lt;-</span> page <span class="sc">|&gt;</span> </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">'.ipc-title__text'</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tail</span>(<span class="sc">-</span><span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">head</span>(<span class="sc">-</span><span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sapply</span>(clean_text) <span class="sc">|&gt;</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gsub</span>(<span class="st">"^</span><span class="sc">\\</span><span class="st">d+</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">s*"</span>, <span class="st">""</span>, <span class="at">x =</span> _) <span class="sc">|&gt;</span>  <span class="co"># Fixed this line with claud ai</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_trim</span>()</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># For the rest of it, using almost the same pattern works.</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Here, release years are loaded.</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  years <span class="ot">&lt;-</span> page <span class="sc">|&gt;</span> </span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">'.sc-300a8231-7.eaXxft.dli-title-metadata-item:nth-child(1)'</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_extract</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">d{4}"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.numeric</span>()</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Here, movie durations are loaded in minutes by using the parse_duration function which was created earlier.</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  durations <span class="ot">&lt;-</span> page <span class="sc">|&gt;</span> </span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">'.sc-300a8231-7.eaXxft.dli-title-metadata-item:nth-child(2)'</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sapply</span>(parse_duration)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Here, movie ratings are loaded.</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  ratings <span class="ot">&lt;-</span> page <span class="sc">|&gt;</span> </span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">'.ipc-rating-star--rating'</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.numeric</span>()</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Here, votes are loaded by using the parse_votes function which was created earlier.</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>  votes <span class="ot">&lt;-</span> page <span class="sc">|&gt;</span> </span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">'.ipc-rating-star--voteCount'</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_text</span>() <span class="sc">|&gt;</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sapply</span>(parse_votes)</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Here, all extracted vectors are combined into a tibble with columns:</span></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">tibble</span>(</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">Title =</span> titles,</span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">Year =</span> years,</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>    <span class="at">Duration =</span> durations,</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">Rating =</span> ratings,</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">Votes =</span> votes</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>  <span class="co">#To apply the scrape_movies function to each URL in the imdb_urls_release_date list, map_df was used but it kept getting error. Therefore, by the help of the claud ai, the code is updated. </span></span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>movies_df <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(<span class="fu">lapply</span>(imdb_urls_release_date, scrape_movies))</span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(movies_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Title</th>
+<th style="text-align: right;">Year</th>
+<th style="text-align: right;">Duration</th>
+<th style="text-align: right;">Rating</th>
+<th style="text-align: right;">Votes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Kuru Otlar Ustune</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">197</td>
+<td style="text-align: right;">7.7</td>
+<td style="text-align: right;">16000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Yedinci Kogustaki Mucize</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">132</td>
+<td style="text-align: right;">8.2</td>
+<td style="text-align: right;">58000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Baskin</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">97</td>
+<td style="text-align: right;">5.8</td>
+<td style="text-align: right;">13000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kis Uykusu</td>
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">196</td>
+<td style="text-align: right;">8.0</td>
+<td style="text-align: right;">57000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Cebimdeki Yabanci</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">95</td>
+<td style="text-align: right;">6.8</td>
+<td style="text-align: right;">10000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ayla</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: right;">125</td>
+<td style="text-align: right;">8.2</td>
+<td style="text-align: right;">45000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bir Zamanlar Anadolu’da</td>
+<td style="text-align: right;">2011</td>
+<td style="text-align: right;">157</td>
+<td style="text-align: right;">7.8</td>
+<td style="text-align: right;">52000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ahlat Agaci</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">188</td>
+<td style="text-align: right;">8.0</td>
+<td style="text-align: right;">29000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Istanbul Icin Son Cagri</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">91</td>
+<td style="text-align: right;">5.3</td>
+<td style="text-align: right;">96000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dag II</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">135</td>
+<td style="text-align: right;">8.2</td>
+<td style="text-align: right;">111000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kurak Gunler</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">129</td>
+<td style="text-align: right;">7.5</td>
+<td style="text-align: right;">13000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dabbe: Cin Carpmasi</td>
+<td style="text-align: right;">2013</td>
+<td style="text-align: right;">134</td>
+<td style="text-align: right;">6.8</td>
+<td style="text-align: right;">79000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mucize</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">136</td>
+<td style="text-align: right;">7.6</td>
+<td style="text-align: right;">15000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bihter</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">113</td>
+<td style="text-align: right;">3.6</td>
+<td style="text-align: right;">41000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Siccin</td>
+<td style="text-align: right;">2014</td>
+<td style="text-align: right;">96</td>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">57000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Olumlu Dunya 2</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">117</td>
+<td style="text-align: right;">6.8</td>
+<td style="text-align: right;">97000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Olumlu Dunya</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">107</td>
+<td style="text-align: right;">7.6</td>
+<td style="text-align: right;">33000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kedi</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">79</td>
+<td style="text-align: right;">7.6</td>
+<td style="text-align: right;">16000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">The Ottoman Lieutenant</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: right;">106</td>
+<td style="text-align: right;">6.4</td>
+<td style="text-align: right;">27000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dag</td>
+<td style="text-align: right;">2012</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">7.5</td>
+<td style="text-align: right;">24000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Av Mevsimi</td>
+<td style="text-align: right;">2010</td>
+<td style="text-align: right;">140</td>
+<td style="text-align: right;">7.4</td>
+<td style="text-align: right;">38000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Do Not Disturb</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">114</td>
+<td style="text-align: right;">6.3</td>
+<td style="text-align: right;">11000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Okul Tirasi</td>
+<td style="text-align: right;">2021</td>
+<td style="text-align: right;">85</td>
+<td style="text-align: right;">7.3</td>
+<td style="text-align: right;">35000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Aile Arasinda</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: right;">124</td>
+<td style="text-align: right;">7.6</td>
+<td style="text-align: right;">27000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Siccin 2</td>
+<td style="text-align: right;">2015</td>
+<td style="text-align: right;">93</td>
+<td style="text-align: right;">6.1</td>
+<td style="text-align: right;">42000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Babam ve Oglum</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">108</td>
+<td style="text-align: right;">8.2</td>
+<td style="text-align: right;">96000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Gunesi Gordum</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: right;">6.6</td>
+<td style="text-align: right;">11000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">G.O.R.A.</td>
+<td style="text-align: right;">2004</td>
+<td style="text-align: right;">127</td>
+<td style="text-align: right;">8.0</td>
+<td style="text-align: right;">69000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Uzak</td>
+<td style="text-align: right;">2002</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">7.5</td>
+<td style="text-align: right;">24000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Masumiyet</td>
+<td style="text-align: right;">1997</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">8.1</td>
+<td style="text-align: right;">21000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Eskiya</td>
+<td style="text-align: right;">1996</td>
+<td style="text-align: right;">128</td>
+<td style="text-align: right;">8.1</td>
+<td style="text-align: right;">73000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kader</td>
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">103</td>
+<td style="text-align: right;">7.7</td>
+<td style="text-align: right;">18000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hababam Sinifi</td>
+<td style="text-align: right;">1975</td>
+<td style="text-align: right;">85</td>
+<td style="text-align: right;">9.2</td>
+<td style="text-align: right;">44000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Issiz Adam</td>
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">113</td>
+<td style="text-align: right;">6.8</td>
+<td style="text-align: right;">24000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Barda</td>
+<td style="text-align: right;">2007</td>
+<td style="text-align: right;">92</td>
+<td style="text-align: right;">7.0</td>
+<td style="text-align: right;">16000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ucurtmayi Vurmasinlar</td>
+<td style="text-align: right;">1989</td>
+<td style="text-align: right;">85</td>
+<td style="text-align: right;">8.2</td>
+<td style="text-align: right;">76000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">D@bbe</td>
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">4.3</td>
+<td style="text-align: right;">49000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Yol</td>
+<td style="text-align: right;">1982</td>
+<td style="text-align: right;">107</td>
+<td style="text-align: right;">7.9</td>
+<td style="text-align: right;">15000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Vavien</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">7.5</td>
+<td style="text-align: right;">14000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kurtlar Vadisi: Irak</td>
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">122</td>
+<td style="text-align: right;">5.7</td>
+<td style="text-align: right;">19000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Nefes</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">128</td>
+<td style="text-align: right;">8.0</td>
+<td style="text-align: right;">36000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Agir Roman</td>
+<td style="text-align: right;">1997</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: right;">7.6</td>
+<td style="text-align: right;">12000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Vizontele</td>
+<td style="text-align: right;">2001</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">8.0</td>
+<td style="text-align: right;">40000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Uc Maymun</td>
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">109</td>
+<td style="text-align: right;">7.3</td>
+<td style="text-align: right;">23000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sevmek Zamani</td>
+<td style="text-align: right;">1965</td>
+<td style="text-align: right;">86</td>
+<td style="text-align: right;">7.9</td>
+<td style="text-align: right;">79000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Recep Ivedik</td>
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">4.9</td>
+<td style="text-align: right;">30000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Gemide</td>
+<td style="text-align: right;">1998</td>
+<td style="text-align: right;">102</td>
+<td style="text-align: right;">7.9</td>
+<td style="text-align: right;">17000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">A.R.O.G</td>
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">127</td>
+<td style="text-align: right;">7.4</td>
+<td style="text-align: right;">47000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Yahsi Bati</td>
+<td style="text-align: right;">2009</td>
+<td style="text-align: right;">112</td>
+<td style="text-align: right;">7.4</td>
+<td style="text-align: right;">39000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Itiraf</td>
+<td style="text-align: right;">2001</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">7.0</td>
+<td style="text-align: right;">43000</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </section>
@@ -293,33 +779,134 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="a" class="level3">
 <h3 class="anchored" data-anchor-id="a">3.a</h3>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 5 × 5
-  Title                     Year Duration Rating  Votes
-  &lt;chr&gt;                    &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-1 Hababam Sinifi            1975       85    9.2  44000
-2 Yedinci Kogustaki Mucize  2019      132    8.2  58000
-3 Ayla                      2017      125    8.2  45000
-4 Dag II                    2016      135    8.2 111000
-5 Babam ve Oglum            2005      108    8.2  96000</code></pre>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>top_5_movies <span class="ot">&lt;-</span> movies_df <span class="sc">|&gt;</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(Rating)) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">5</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>bottom_5_movies <span class="ot">&lt;-</span> movies_df <span class="sc">|&gt;</span> <span class="fu">arrange</span>(Rating) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(top_5_movies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Title</th>
+<th style="text-align: right;">Year</th>
+<th style="text-align: right;">Duration</th>
+<th style="text-align: right;">Rating</th>
+<th style="text-align: right;">Votes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Hababam Sinifi</td>
+<td style="text-align: right;">1975</td>
+<td style="text-align: right;">85</td>
+<td style="text-align: right;">9.2</td>
+<td style="text-align: right;">44000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Yedinci Kogustaki Mucize</td>
+<td style="text-align: right;">2019</td>
+<td style="text-align: right;">132</td>
+<td style="text-align: right;">8.2</td>
+<td style="text-align: right;">58000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ayla</td>
+<td style="text-align: right;">2017</td>
+<td style="text-align: right;">125</td>
+<td style="text-align: right;">8.2</td>
+<td style="text-align: right;">45000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dag II</td>
+<td style="text-align: right;">2016</td>
+<td style="text-align: right;">135</td>
+<td style="text-align: right;">8.2</td>
+<td style="text-align: right;">111000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Babam ve Oglum</td>
+<td style="text-align: right;">2005</td>
+<td style="text-align: right;">108</td>
+<td style="text-align: right;">8.2</td>
+<td style="text-align: right;">96000</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 5 × 5
-  Title                    Year Duration Rating Votes
-  &lt;chr&gt;                   &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
-1 Bihter                   2023      113    3.6 41000
-2 D@bbe                    2006      110    4.3 49000
-3 Recep Ivedik             2008       90    4.9 30000
-4 Istanbul Icin Son Cagri  2023       91    5.3 96000
-5 Kurtlar Vadisi: Irak     2006      122    5.7 19000</code></pre>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(bottom_5_movies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Title</th>
+<th style="text-align: right;">Year</th>
+<th style="text-align: right;">Duration</th>
+<th style="text-align: right;">Rating</th>
+<th style="text-align: right;">Votes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Bihter</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">113</td>
+<td style="text-align: right;">3.6</td>
+<td style="text-align: right;">41000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">D@bbe</td>
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">4.3</td>
+<td style="text-align: right;">49000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Recep Ivedik</td>
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">4.9</td>
+<td style="text-align: right;">30000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Istanbul Icin Son Cagri</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">91</td>
+<td style="text-align: right;">5.3</td>
+<td style="text-align: right;">96000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kurtlar Vadisi: Irak</td>
+<td style="text-align: right;">2006</td>
+<td style="text-align: right;">122</td>
+<td style="text-align: right;">5.7</td>
+<td style="text-align: right;">19000</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </section>
 <section id="b" class="level3">
 <h3 class="anchored" data-anchor-id="b">3.b</h3>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>favorite_movies_of_cerem <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Ayla"</span>, <span class="st">"Issiz Adam"</span>, <span class="st">"G.O.R.A."</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>movies_df <span class="sc">|&gt;</span> <span class="fu">filter</span>(Title <span class="sc">%in%</span> favorite_movies_of_cerem)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 5
   Title       Year Duration Rating Votes
@@ -333,19 +920,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="c" class="level3">
 <h3 class="anchored" data-anchor-id="c">3.c</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Yearly analysis of the mean IMDB ratings in Turkiye.</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>yearly_ratings <span class="ot">&lt;-</span> movies_df <span class="sc">|&gt;</span> </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">|&gt;</span> </span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">average_rating =</span> <span class="fu">mean</span>(Rating, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">Movie_Count =</span> <span class="fu">n</span>())</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Scatter plot</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(yearly_ratings, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> average_rating)) <span class="sc">+</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Mean IMDB Ratings Over the Years in Turkiye"</span>, <span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Mean IMDB Rating"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Yearly analysis of the mean IMDB ratings in Turkiye.</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>yearly_ratings <span class="ot">&lt;-</span> movies_df <span class="sc">|&gt;</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">|&gt;</span> </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">average_rating =</span> <span class="fu">mean</span>(Rating, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">Movie_Count =</span> <span class="fu">n</span>())</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Scatter plot</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(yearly_ratings, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> average_rating)) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Mean IMDB Ratings Over the Years in Turkiye"</span>, <span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Mean IMDB Rating"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -355,14 +948,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Analysing of number of movies released in each year in Turkiye.</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>movies_counted <span class="ot">&lt;-</span> movies_df <span class="sc">|&gt;</span> </span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">|&gt;</span> </span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Movie_Count =</span> <span class="fu">n</span>())</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(movies_counted, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> Movie_Count)) <span class="sc">+</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Number of Movies Released Over the Years in Turkiye"</span>, <span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Number of Movies"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Analysing of number of movies released in each year in Turkiye.</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>movies_counted <span class="ot">&lt;-</span> movies_df <span class="sc">|&gt;</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">|&gt;</span> </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Movie_Count =</span> <span class="fu">n</span>())</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(movies_counted, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> Movie_Count)) <span class="sc">+</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Number of Movies Released Over the Years in Turkiye"</span>, <span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Number of Movies"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -372,17 +968,82 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Box plots of ratings over the years</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>movies_df <span class="sc">|&gt;</span>  </span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">|&gt;</span> </span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(Year), <span class="at">y=</span> Rating)) <span class="sc">+</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"IMDB Ratings Over the Years in Turkiye"</span>, <span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"IMDB Rating"</span>) <span class="sc">+</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Box plots of ratings over the years</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>movies_df <span class="sc">|&gt;</span>  </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Year) <span class="sc">|&gt;</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(Year), <span class="at">y=</span> Rating)) <span class="sc">+</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"IMDB Ratings Over the Years in Turkiye"</span>, <span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"IMDB Rating"</span>) <span class="sc">+</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">90</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
 <p><img src="assignment-2_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="d" class="level3">
+<h3 class="anchored" data-anchor-id="d">3.d</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Correlation analysis</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>correlation_votes_ratings <span class="ot">&lt;-</span> <span class="fu">cor</span>(movies_df<span class="sc">$</span>Votes, movies_df<span class="sc">$</span>Rating, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Correlation between Votes and Rating: "</span>, correlation_votes_ratings))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Correlation between Votes and Rating:  0.0827775968323517"</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(movies_df, <span class="fu">aes</span>(<span class="at">x =</span> Votes, <span class="at">y =</span> Rating)) <span class="sc">+</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">col =</span> <span class="st">"blue"</span>) <span class="sc">+</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Relation between Rating and Votes"</span>, <span class="at">x =</span> <span class="st">"Votes"</span>, <span class="at">y =</span> <span class="st">"Rating"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="assignment-2_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="e" class="level3">
+<h3 class="anchored" data-anchor-id="e">3.e</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Correlation analysis</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>correlation_duration_ratings <span class="ot">&lt;-</span> <span class="fu">cor</span>(movies_df<span class="sc">$</span>Duration, movies_df<span class="sc">$</span>Rating, <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Correlation between Duration and Rating: "</span>, correlation_duration_ratings))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Correlation between Duration and Rating:  0.225018765415274"</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Scatter plot</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(movies_df, <span class="fu">aes</span>(<span class="at">x =</span> Duration, <span class="at">y =</span> Rating)) <span class="sc">+</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">col =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Relation between Duration and Rating"</span>, <span class="at">x =</span> <span class="st">"Duration"</span>, <span class="at">y =</span> <span class="st">"Rating"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="assignment-2_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
