@@ -117,7 +117,7 @@ scrape_movies <- function(url) {
     tail(-1) |>
     head(-1) |>
     sapply(clean_text) |>
-    gsub("^\\d+\\.\\s*", "", x = _) |>  # Fixed this line with claud ai
+    gsub("^\\d+\\.\\s*", "", x = _) |>  # Fixed this line with claud ai, there was a dot and it was causing an error, x = _ was added for the solution.
     str_trim()
   
   # For the rest of it, using almost the same pattern works.
@@ -196,7 +196,9 @@ knitr::kable(bottom_5_movies)
 #| warning: false
 favorite_movies_of_cerem <- c("Ayla", "Issiz Adam", "G.O.R.A.")
 
-movies_df |> filter(Title %in% favorite_movies_of_cerem)
+favorite_movies_of_cerem_df <- movies_df |> filter(Title %in% favorite_movies_of_cerem)
+
+knitr::kable(favorite_movies_of_cerem_df)
 ```
 
 ### 3.c
@@ -295,3 +297,69 @@ ggplot(movies_df, aes(x = Duration, y = Rating)) +
 ```
 
 ## Part 4
+
+```{r}
+# Top 1000 Analysis
+top_1000_url <- "https://www.imdb.com/search/title/?title_type=feature&groups=top_1000&country_of_origin=TR"
+
+analyze_top_1000 <- function(url) {
+  page <- read_html(url)
+  
+  #First, a clean vector of movie titles has created as in the scrape_movies function.
+  titles <- page |> 
+    html_nodes('.ipc-title__text') |> 
+    html_text() |>
+    tail(-1) |>
+    head(-1) |>
+    sapply(clean_text) |>
+    gsub("^\\d+\\.\\s*", "", x = _) |>
+    str_trim()
+  
+  #Then, releasing years are loaded in a numeric vector, again, as in the scrape_movies function.
+  years <- page |> 
+    html_nodes('.sc-300a8231-7.eaXxft.dli-title-metadata-item:nth-child(1)') |> 
+    html_text() |>
+    as.numeric()
+  
+  #Here, both extracted vectors are combined into a tibble with columns.
+  return(tibble(
+    Title = titles,
+    Year = years,
+  ))
+
+}
+
+  #analyze_top_1000 function is applied to top_1000_url, and with that, a new data frame with Turkish movies in the top 1000, containing only the title and year is created.
+top_1000_df <- analyze_top_1000(top_1000_url)
+
+  #Lastly, the duration, rating, and votes attributes of top_1000_df is filled by joining it with the original data frame, movies_df. It's named as merged_df.
+  merged_df <- left_join(top_1000_df, movies_df, by = c("Title", "Year"))
+  
+knitr::kable(merged_df |> arrange(desc(Rating)))
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
