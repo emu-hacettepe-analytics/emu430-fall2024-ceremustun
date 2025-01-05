@@ -5,7 +5,11 @@ code-fold: true
 
 # Assignment 2
 
-## Part 1 URLs
+The general topic of this assignment is the IMDb Turkish Movies Overview and it consists of 4 parts. [imdb](https://m.imdb.com/search/title/) is the primer source of this assignment.
+
+## Part 1 - URLs
+
+In this part, movies in Turkiye which has minimum of 2500 reviews were filtered in [imdb](https://m.imdb.com/search/title/) website and it's url is saved. There was a total of 495 movies listed. After that, one more filtering was done by the movies release date: movies released from 2010 to 2023 and movies released before 2010. These urls are saved into a vector to use later.
 
 ```{r}
 #| echo: true
@@ -24,9 +28,9 @@ imdb_urls_release_date <- c(
 imdb_urls_release_date
 ```
 
-## Part 2 Web Scrapping
+## Part 2 - Web Scrapping
 
-First the libraries that are needed are loaded:
+First the libraries that are needed are loaded.
 
 ```{r}
 #| echo: true
@@ -39,6 +43,8 @@ library(stringr)
 library(stringi)
 library(kableExtra)
 ```
+
+Some helper functions are defined to use in further analysis. The reason they were created is because some data cleaning was needed to be done: 1) Title: the Turkish characters were needed to be get rid of (clean_text). 2) Duration: Durations were not in the same pattern and also they were not numeric. All of the durations turned into minutes (parse_duration). 3) Votes: Votes were not in the same pattern and also they were not numeric as in the durations. All votes turned into numeric numbers (parse_votes).
 
 ```{r}
 #| echo: true
@@ -99,6 +105,10 @@ parse_votes <- function(vote_str) {
 }
 
 ```
+
+The movies released from 2010 to 2023 and movies released before 2010 are combined into a one data frame with their respective Title, Year (of release), Duration (in minutes), Rating (IMDb score) and Votes by the help of functions that were mentioned before.
+
+In the data table shown below, some of those filtered movies are displayed. As it can be seen, some of them has high ratings with their strong approval from audiences; while some of the others couldn't reached high scores.
 
 ```{r}
 #| echo: true
@@ -162,9 +172,11 @@ movies_df <- bind_rows(lapply(imdb_urls_release_date, scrape_movies))
 knitr::kable(movies_df)
 ```
 
-## Part 3
+## Part 3 - Some Analysis
 
 ### 3.a
+
+In this part, top 5 and bottom 5 movies were listed based on user ratings.
 
 ```{r}
 #| echo: true
@@ -174,12 +186,18 @@ top_5_movies <- movies_df |> arrange(desc(Rating)) |> head(5)
 bottom_5_movies <- movies_df |> arrange(Rating) |> head(5)
 ```
 
+*TOP 5 MOVIES*
+
 ```{r}
 #| echo: true
 #| message: false
 #| warning: false
 knitr::kable(top_5_movies)
 ```
+
+I've watched 3 of those movies: Hababam Sinifi, Yedinci Kogustaki Mucize and Ayla. I believe all of those threes deserved high ratings, especially Hababam Sinifi. It has a few generations that really enjoy to watch it. It's like a legend. For Yedinci Kogustaki Mucize and Ayla, i'd say they were one of the best drama movies i've ever watched. I cried a lot while watching them. They touched my heart.
+
+*BOTTOM 5 MOVIES*
 
 ```{r}
 #| echo: true
@@ -188,20 +206,28 @@ knitr::kable(top_5_movies)
 knitr::kable(bottom_5_movies)
 ```
 
+I've not watched any of them, therefore i don't have many comments. I've seen some scenes from the movie Dabbe, i believe i wouldn't like that. Plus to that, lots of Turkish people love the movie Recep Ivedik but i believe i don't like this genre.
+
 ### 3.b
+
+Here are the two of the movies i've watched before. I'm not saying they're my favorites but, since i've watched them, i've wondered their ratings. Therefore, let's see the ratings of G.O.R.A. and Issiz Adam.
 
 ```{r}
 #| echo: true
 #| message: false
 #| warning: false
-favorite_movies_of_cerem <- c("Ayla", "Issiz Adam", "G.O.R.A.")
+favorite_movies_of_cerem <- c("Issiz Adam", "G.O.R.A.")
 
 favorite_movies_of_cerem_df <- movies_df |> filter(Title %in% favorite_movies_of_cerem)
 
 knitr::kable(favorite_movies_of_cerem_df)
 ```
 
+To be honest, i am not suprised by the results. 1) G.O.R.A.: It's a sci_fi comedy and i remember its popularity even though i was born in the same year that it was released. It was a funny movie, i think it deserves the 8.0 rating. 2) Issiz Adam : It's a romantic drama movie which i've found a bit boring and mundane. There are many lovers of this movie but the number of people who thinks like me are not a few. Therefore, i think the rating 6.8 is normal.
+
 ### 3.c
+
+Audience rating is a crucial indicator of movie quality.
 
 ```{r}
 #| echo: true
@@ -209,6 +235,8 @@ knitr::kable(favorite_movies_of_cerem_df)
 #| warning: false
 library(ggplot2)
 ```
+
+In this scatter plot, average ratings of Turkish movies over the years is displayed.
 
 ```{r}
 #| echo: true
@@ -226,6 +254,12 @@ ggplot(yearly_ratings, aes(x = Year, y = average_rating)) +
   labs(title = "Mean IMDB Ratings Over the Years in Turkiye", x = "Year", y = "Mean IMDB Rating")
 ```
 
+It can be seen that, the ratings are generally in between 6.5 and 8.5. In some years, there are no ratings since there is no movies released within the filters that we have done.
+
+But, this plot doesn't give us enough information. Using yearly averages could be misleading due to the increasing number of movies each year.
+
+In this bar plot, number of Turkish movies released over the years is displayed.
+
 ```{r}
 #| echo: true
 #| message: false
@@ -240,6 +274,10 @@ ggplot(movies_counted, aes(x = Year, y = Movie_Count)) +
   labs(title = "Number of Movies Released Over the Years in Turkiye", x = "Year", y = "Number of Movies")
 ```
 
+It can be seen that, although the number of movies released before 2000 was very small, there seems to be an increasing trend in the number of movies released after 2000.
+
+In this box plot, ratings (not average) of Turkish movies over the years is displayed.
+
 ```{r}
 #| echo: true
 #| message: false
@@ -253,7 +291,15 @@ movies_df |>
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
+In earlier years, ratings were concentrated in a narrow range.
+
+After 2006, the ratings which have a wider range occured a lot.
+
+Generally, the years which show narrow rating range have high ratings.
+
 ### 3.d
+
+In this part, correlation between votes and ratings is analysed.
 
 ```{r}
 #| echo: true
@@ -263,6 +309,10 @@ movies_df |>
 correlation_votes_ratings <- cor(movies_df$Votes, movies_df$Rating, use = "complete.obs")
 print(paste("Correlation between Votes and Rating: ", correlation_votes_ratings))
 ```
+
+This number of correlation indicates an extremely weak positive correlation, which means there’s almost no linear relationship between how many people vote on a movie and its rating.
+
+In this scatter plot, it's displayed.
 
 ```{r}
 #| echo: true
@@ -274,7 +324,10 @@ ggplot(movies_df, aes(x = Votes, y = Rating)) +
   geom_smooth(method = "lm", col = "blue") +
   labs(title = "Relation between Rating and Votes", x = "Votes", y = "Rating")
 ```
+
 ### 3.e
+
+In this part, correlation between durations and ratings is analysed.
 
 ```{r}
 #| echo: true
@@ -284,6 +337,10 @@ ggplot(movies_df, aes(x = Votes, y = Rating)) +
 correlation_duration_ratings <- cor(movies_df$Duration, movies_df$Rating, use = "complete.obs")
 print(paste("Correlation between Duration and Rating: ", correlation_duration_ratings))
 ```
+
+This number of correlation indicates a weak to moderate positive correlation, which is stronger than the correlation with vote counts we saw earlier.
+
+In this scatter plot, it's displayed.
 
 ```{r}
 #| echo: true
@@ -297,6 +354,8 @@ ggplot(movies_df, aes(x = Duration, y = Rating)) +
 ```
 
 ## Part 4
+
+In the table below, Turkish movies that are in the top 1000 movies on IMDb is shown in descending order.
 
 ```{r}
 # Top 1000 Analysis
@@ -339,27 +398,4 @@ knitr::kable(merged_df |> arrange(desc(Rating)))
 
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Some movies did not make it into the top 1000, this is because IMDb filters itself by year and the 1975 movie was not included.
