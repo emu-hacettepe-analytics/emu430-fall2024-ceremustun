@@ -209,9 +209,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#assignment-2" id="toc-assignment-2" class="nav-link active" data-scroll-target="#assignment-2">Assignment 2</a>
   <ul class="collapse">
-  <li><a href="#part-1-urls" id="toc-part-1-urls" class="nav-link" data-scroll-target="#part-1-urls">Part 1 URLs</a></li>
-  <li><a href="#part-2-web-scrapping" id="toc-part-2-web-scrapping" class="nav-link" data-scroll-target="#part-2-web-scrapping">Part 2 Web Scrapping</a></li>
-  <li><a href="#part-3" id="toc-part-3" class="nav-link" data-scroll-target="#part-3">Part 3</a>
+  <li><a href="#part-1---urls" id="toc-part-1---urls" class="nav-link" data-scroll-target="#part-1---urls">Part 1 - URLs</a></li>
+  <li><a href="#part-2---web-scrapping" id="toc-part-2---web-scrapping" class="nav-link" data-scroll-target="#part-2---web-scrapping">Part 2 - Web Scrapping</a></li>
+  <li><a href="#part-3---some-analysis" id="toc-part-3---some-analysis" class="nav-link" data-scroll-target="#part-3---some-analysis">Part 3 - Some Analysis</a>
   <ul class="collapse">
   <li><a href="#a" id="toc-a" class="nav-link" data-scroll-target="#a">3.a</a></li>
   <li><a href="#b" id="toc-b" class="nav-link" data-scroll-target="#b">3.b</a></li>
@@ -252,8 +252,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="assignment-2" class="level1">
 <h1>Assignment 2</h1>
-<section id="part-1-urls" class="level2">
-<h2 class="anchored" data-anchor-id="part-1-urls">Part 1 URLs</h2>
+<p>The general topic of this assignment is the IMDb Turkish Movies Overview and it consists of 4 parts. <a href="https://m.imdb.com/search/title/">imdb</a> is the primer source of this assignment.</p>
+<section id="part-1---urls" class="level2">
+<h2 class="anchored" data-anchor-id="part-1---urls">Part 1 - URLs</h2>
+<p>In this part, movies in Turkiye which has minimum of 2500 reviews were filtered in <a href="https://m.imdb.com/search/title/">imdb</a> website and it’s url is saved. There was a total of 495 movies listed. After that, one more filtering was done by the movies release date: movies released from 2010 to 2023 and movies released before 2010. These urls are saved into a vector to use later.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -275,9 +277,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="part-2-web-scrapping" class="level2">
-<h2 class="anchored" data-anchor-id="part-2-web-scrapping">Part 2 Web Scrapping</h2>
-<p>First the libraries that are needed are loaded:</p>
+<section id="part-2---web-scrapping" class="level2">
+<h2 class="anchored" data-anchor-id="part-2---web-scrapping">Part 2 - Web Scrapping</h2>
+<p>First the libraries that are needed are loaded.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -289,6 +291,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+<p>Some helper functions are defined to use in further analysis. The reason they were created is because some data cleaning was needed to be done: 1) Title: the Turkish characters were needed to be get rid of (clean_text). 2) Duration: Durations were not in the same pattern and also they were not numeric. All of the durations turned into minutes (parse_duration). 3) Votes: Votes were not in the same pattern and also they were not numeric as in the durations. All votes turned into numeric numbers (parse_votes).</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -347,6 +350,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+<p>The movies released from 2010 to 2023 and movies released before 2010 are combined into a one data frame with their respective Title, Year (of release), Duration (in minutes), Rating (IMDb score) and Votes by the help of functions that were mentioned before.</p>
+<p>In the data table shown below, some of those filtered movies are displayed. As it can be seen, some of them has high ratings with their strong approval from audiences; while some of the others couldn’t reached high scores.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -774,10 +779,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="part-3" class="level2">
-<h2 class="anchored" data-anchor-id="part-3">Part 3</h2>
+<section id="part-3---some-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="part-3---some-analysis">Part 3 - Some Analysis</h2>
 <section id="a" class="level3">
 <h3 class="anchored" data-anchor-id="a">3.a</h3>
+<p>In this part, top 5 and bottom 5 movies were listed based on user ratings.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -785,6 +791,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>bottom_5_movies <span class="ot">&lt;-</span> movies_df <span class="sc">|&gt;</span> <span class="fu">arrange</span>(Rating) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+<p><em>TOP 5 MOVIES</em></p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -841,6 +848,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
+<p>I’ve watched 3 of those movies: Hababam Sinifi, Yedinci Kogustaki Mucize and Ayla. I believe all of those threes deserved high ratings, especially Hababam Sinifi. It has a few generations that really enjoy to watch it. It’s like a legend. For Yedinci Kogustaki Mucize and Ayla, i’d say they were one of the best drama movies i’ve ever watched. I cried a lot while watching them. They touched my heart.</p>
+<p><em>BOTTOM 5 MOVIES</em></p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -897,13 +906,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
+<p>I’ve not watched any of them, therefore i don’t have many comments. I’ve seen some scenes from the movie Dabbe, i believe i wouldn’t like that. Plus to that, lots of Turkish people love the movie Recep Ivedik but i believe i don’t like this genre.</p>
 </section>
 <section id="b" class="level3">
 <h3 class="anchored" data-anchor-id="b">3.b</h3>
+<p>Here are the two of the movies i’ve watched before. I’m not saying they’re my favorites but, since i’ve watched them, i’ve wondered their ratings. Therefore, let’s see the ratings of G.O.R.A. and Issiz Adam.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>favorite_movies_of_cerem <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Ayla"</span>, <span class="st">"Issiz Adam"</span>, <span class="st">"G.O.R.A."</span>)</span>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>favorite_movies_of_cerem <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Issiz Adam"</span>, <span class="st">"G.O.R.A."</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>favorite_movies_of_cerem_df <span class="ot">&lt;-</span> movies_df <span class="sc">|&gt;</span> <span class="fu">filter</span>(Title <span class="sc">%in%</span> favorite_movies_of_cerem)</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -922,20 +933,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Ayla</td>
-<td style="text-align: right;">2017</td>
-<td style="text-align: right;">125</td>
-<td style="text-align: right;">8.2</td>
-<td style="text-align: right;">45000</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">G.O.R.A.</td>
 <td style="text-align: right;">2004</td>
 <td style="text-align: right;">127</td>
 <td style="text-align: right;">8.0</td>
 <td style="text-align: right;">69000</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">Issiz Adam</td>
 <td style="text-align: right;">2008</td>
 <td style="text-align: right;">113</td>
@@ -946,15 +950,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
+<p>To be honest, i am not suprised by the results. 1) G.O.R.A.: It’s a sci_fi comedy and i remember its popularity even though i was born in the same year that it was released. It was a funny movie, i think it deserves the 8.0 rating. 2) Issiz Adam : It’s a romantic drama movie which i’ve found a bit boring and mundane. There are many lovers of this movie but the number of people who thinks like me are not a few. Therefore, i think the rating 6.8 is normal.</p>
 </section>
 <section id="c" class="level3">
 <h3 class="anchored" data-anchor-id="c">3.c</h3>
+<p>Audience rating is a crucial indicator of movie quality.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+<p>In this scatter plot, average ratings of Turkish movies over the years is displayed.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -977,6 +984,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p>It can be seen that, the ratings are generally in between 6.5 and 8.5. In some years, there are no ratings since there is no movies released within the filters that we have done.</p>
+<p>But, this plot doesn’t give us enough information. Using yearly averages could be misleading due to the increasing number of movies each year.</p>
+<p>In this bar plot, number of Turkish movies released over the years is displayed.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -997,6 +1007,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p>It can be seen that, although the number of movies released before 2000 was very small, there seems to be an increasing trend in the number of movies released after 2000.</p>
+<p>In this box plot, ratings (not average) of Turkish movies over the years is displayed.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -1016,9 +1028,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p>In earlier years, ratings were concentrated in a narrow range.</p>
+<p>After 2006, the ratings which have a wider range occured a lot.</p>
+<p>Generally, the years which show narrow rating range have high ratings.</p>
 </section>
 <section id="d" class="level3">
 <h3 class="anchored" data-anchor-id="d">3.d</h3>
+<p>In this part, correlation between votes and ratings is analysed.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -1030,6 +1046,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>[1] "Correlation between Votes and Rating:  0.0827775968323517"</code></pre>
 </div>
 </div>
+<p>This number of correlation indicates an extremely weak positive correlation, which means there’s almost no linear relationship between how many people vote on a movie and its rating.</p>
+<p>In this scatter plot, it’s displayed.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -1050,6 +1068,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="e" class="level3">
 <h3 class="anchored" data-anchor-id="e">3.e</h3>
+<p>In this part, correlation between durations and ratings is analysed.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -1061,6 +1080,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>[1] "Correlation between Duration and Rating:  0.225018765415274"</code></pre>
 </div>
 </div>
+<p>This number of correlation indicates a weak to moderate positive correlation, which is stronger than the correlation with vote counts we saw earlier.</p>
+<p>In this scatter plot, it’s displayed.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -1082,6 +1103,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="part-4" class="level2">
 <h2 class="anchored" data-anchor-id="part-4">Part 4</h2>
+<p>In the table below, Turkish movies that are in the top 1000 movies on IMDb is shown in descending order.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -1216,6 +1238,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </div>
 </div>
+<p>Some movies did not make it into the top 1000, this is because IMDb filters itself by year and the 1975 movie was not included.</p>
 
 
 </section>
