@@ -186,7 +186,7 @@ top_5_movies <- movies_df |> arrange(desc(Rating)) |> head(5)
 bottom_5_movies <- movies_df |> arrange(Rating) |> head(5)
 ```
 
-*TOP 5 MOVIES*
+**TOP 5 MOVIES**
 
 ```{r}
 #| echo: true
@@ -197,7 +197,7 @@ knitr::kable(top_5_movies)
 
 I've watched 3 of those movies: Hababam Sinifi, Yedinci Kogustaki Mucize and Ayla. I believe all of those threes deserved high ratings, especially Hababam Sinifi. It has a few generations that really enjoy to watch it. It's like a legend. For Yedinci Kogustaki Mucize and Ayla, i'd say they were one of the best drama movies i've ever watched. I cried a lot while watching them. They touched my heart.
 
-*BOTTOM 5 MOVIES*
+**BOTTOM 5 MOVIES**
 
 ```{r}
 #| echo: true
@@ -269,9 +269,10 @@ movies_counted <- movies_df |>
   group_by(Year) |> 
   summarise(Movie_Count = n())
 
-ggplot(movies_counted, aes(x = Year, y = Movie_Count)) +
+ggplot(movies_counted, aes(x = factor(Year), y = Movie_Count)) +
   geom_bar(stat = "identity") +
-  labs(title = "Number of Movies Released Over the Years in Turkiye", x = "Year", y = "Number of Movies")
+  labs(title = "Number of Movies Released Over the Years in Turkiye", x = "Year", y = "Number of Movies") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
 It can be seen that, although the number of movies released before 2000 was very small, there seems to be an increasing trend in the number of movies released after 2000.
